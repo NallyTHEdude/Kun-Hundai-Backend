@@ -1,0 +1,12 @@
+model Customer {
+  id          String    @id @db.Uuid
+  fullName    String
+  phoneNumber String    @unique
+  address     String?
+  createdAt   DateTime  @db.Timestamptz
+  updatedAt   DateTime  @db.Timestamptz
+
+  vehicles    Vehicle[]
+
+  @@map("Customer")
+}

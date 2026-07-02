@@ -1,15 +1,17 @@
 model User {
-  id                  String   @id @db.Uuid
-  fullName            String
-  phoneNumber         String   @unique
-  email               String   @unique
-  role                UserRole // default(UserRole.EMPLOYEE)
+  id            String         @id @db.Uuid
+  fullName      String
+  phoneNumber   String         @unique
+  role          UserRoleEnum
+  email         String         @unique
+  createdAt     DateTime       @db.Timestamptz
+  updatedAt     DateTime       @db.Timestamptz
 
-  createdAt DateTime @default(now()) @db.Timestamptz(5)
-  updatedAt DateTime @updatedAt @db.Timestamptz(5)
+  serviceVisits ServiceVisit[] @relation("UserServiceVisits")
+
+  @@map("User")
 }
-
-enum UserRole {
+enum UserRoleEnum {
   ADMIN    @map("ADMIN")
   EMPLOYEE     @map("EMPLOYEE")
 }

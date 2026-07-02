@@ -1,0 +1,31 @@
+model ServiceVisit {
+  id               String            @id @db.Uuid
+  vehicleId         String            @db.Uuid
+  entryBy           String            @db.Uuid
+  kilometersDriven  BigInt
+  serviceType       String
+  description       String
+  serviceStatus     ServiceStatusEnum
+  scheduledAt       DateTime          @db.Timestamptz
+  createdAt         DateTime          @db.Timestamptz
+  updatedAt         DateTime          @db.Timestamptz
+  completedAt       DateTime?         @db.Timestamptz
+
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+enteredBy User @relation("UserServiceVisits", fields: [entryBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([vehicleId, scheduledAt], map: "ServiceVisit_vehicle_history_idx")
+  @@index([serviceStatus, scheduledAt], map: "ServiceVisit_status_filter_idx")
+  @@index([entryBy, createdAt], map: "ServiceVisit_user_filter_idx")
+  @@index([scheduledAt], map: "ServiceVisit_index_3")
+  @@index([completedAt], map: "ServiceVisit_index_4")
+  @@map("ServiceVisit")
+}
+
+enum ServiceStatusEnum {
+  COMPLETED
+  PENDING
+  CANCELLED
+  IN_PROGRESS
+}
