@@ -15,6 +15,8 @@ model ServiceVisit {
 
   enteredBy User @relation("UserServiceVisits", fields: [entryBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
+  @@unique([vehicleId, scheduledAt])
+  
   @@index([vehicleId, scheduledAt], map: "ServiceVisit_vehicle_history_idx")
   @@index([serviceStatus, scheduledAt], map: "ServiceVisit_status_filter_idx")
   @@index([entryBy, createdAt], map: "ServiceVisit_user_filter_idx")

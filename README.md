@@ -101,11 +101,11 @@ Request body:
 
 ```json
 {
-  "email": "user@example.com",
-  "password": "StrongPass123",
-  "fullName": "Test User",
-  "phoneNumber": "0000000000",
-  "role": "EMPLOYEE"
+    "email": "user@example.com",
+    "password": "StrongPass123",
+    "fullName": "Test User",
+    "phoneNumber": "0000000000",
+    "role": "EMPLOYEE"
 }
 ```
 
@@ -126,8 +126,8 @@ Request body:
 
 ```json
 {
-  "email": "user@example.com",
-  "password": "StrongPass123"
+    "email": "user@example.com",
+    "password": "StrongPass123"
 }
 ```
 
@@ -159,7 +159,7 @@ Request body:
 
 ```json
 {
-  "email": "user@example.com"
+    "email": "user@example.com"
 }
 ```
 
@@ -173,9 +173,9 @@ Request body:
 
 ```json
 {
-  "accessToken": "token_from_recovery_link",
-  "refreshToken": "refresh_token_from_recovery_link",
-  "newPassword": "NewStrongPass123"
+    "accessToken": "token_from_recovery_link",
+    "refreshToken": "refresh_token_from_recovery_link",
+    "newPassword": "NewStrongPass123"
 }
 ```
 
@@ -196,7 +196,7 @@ Request body:
 
 ```json
 {
-  "identifier": "user@example.com"
+    "identifier": "user@example.com"
 }
 ```
 

@@ -30,6 +30,7 @@ app.use(
 // ---------- Routers setup ----------
 import healthCheckRouter from './routes/healthCheck.routes.js';
 import authRouter from './routes/auth.routes.js';
+import vehicleServiceRouter from './routes/serviceVisit.routes.js';
 
 //routes
 app.use('/api/health', healthCheckRouter);
