@@ -1,12 +1,12 @@
 model Vehicle {
-  id            String    @id @db.Uuid
-  customerId    String    @db.Uuid
-  vehicleNumber String    @unique
+  id            String   @id @db.Uuid
+  customerId    String   @db.Uuid
+  vehicleNumber String   @unique
   vehicleType   String
-  createdAt     DateTime  @db.Timestamptz
-  updatedAt     DateTime  @db.Timestamptz
+  createdAt     DateTime @db.Timestamptz
+  updatedAt     DateTime @db.Timestamptz
 
-  customer      Customer      @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  customer      Customer       @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   serviceVisits ServiceVisit[]
 
   @@index([customerId], map: "Vehicle_customer_idx")
