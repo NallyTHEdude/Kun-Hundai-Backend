@@ -9,6 +9,6 @@ model Vehicle {
   customer      Customer      @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   serviceVisits ServiceVisit[]
 
-  @@index([customerId], map: "Vehicle_index_0")
+  @@index([customerId], map: "Vehicle_customer_idx")
   @@map("Vehicle")
 }

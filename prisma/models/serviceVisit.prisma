@@ -18,8 +18,8 @@ enteredBy User @relation("UserServiceVisits", fields: [entryBy], references: [id
   @@index([vehicleId, scheduledAt], map: "ServiceVisit_vehicle_history_idx")
   @@index([serviceStatus, scheduledAt], map: "ServiceVisit_status_filter_idx")
   @@index([entryBy, createdAt], map: "ServiceVisit_user_filter_idx")
-  @@index([scheduledAt], map: "ServiceVisit_index_3")
-  @@index([completedAt], map: "ServiceVisit_index_4")
+  @@index([scheduledAt], map: "ServiceVisit_scheduledAt_idx")
+  @@index([completedAt], map: "ServiceVisit_completedAt_idx")
   @@map("ServiceVisit")
 }
 
