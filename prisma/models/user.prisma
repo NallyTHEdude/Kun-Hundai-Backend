@@ -1,0 +1,15 @@
+model User {
+  id                  String   @id @db.Uuid
+  fullName            String
+  phoneNumber         String   @unique
+  email               String   @unique
+  role                UserRole // default(UserRole.EMPLOYEE)
+
+  createdAt DateTime @default(now()) @db.Timestamptz(5)
+  updatedAt DateTime @updatedAt @db.Timestamptz(5)
+}
+
+enum UserRole {
+  ADMIN    @map("ADMIN")
+  EMPLOYEE     @map("EMPLOYEE")
+}
