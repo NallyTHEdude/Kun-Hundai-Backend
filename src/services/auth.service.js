@@ -38,6 +38,8 @@ const registerUser = async ({
                 fullName,
                 phoneNumber,
                 role,
+                createdAt: new Date(),
+                updatedAt: new Date(),
             },
         });
 
