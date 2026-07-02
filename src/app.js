@@ -35,6 +35,7 @@ import vehicleServiceRouter from './routes/serviceVisit.routes.js';
 //routes
 app.use('/api/health', healthCheckRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/vehicleService', vehicleServiceRouter);
 
 // BASE route
 app.get('/', (req, res) => {
