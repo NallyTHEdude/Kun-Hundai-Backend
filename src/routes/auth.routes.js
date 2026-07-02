@@ -7,7 +7,7 @@ import {
     forgotPassword,
     resetPassword,
     deleteUser,
-} from '../controllers/auth.controllers.js';
+} from '../controllers/auth.controller.js';
 import { verifyJWT, verifyRole } from '../middlewares/auth.middleware.js';
 import { UserRolesEnum } from '../constants/user.constants.js';
 import { validate } from '../validators/validator.js';
