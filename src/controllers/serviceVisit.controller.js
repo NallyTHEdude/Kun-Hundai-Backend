@@ -1,7 +1,10 @@
 import { ApiResponse } from '../utils/api-response.js';
 import { ApiError } from '../utils/api-error.js';
 import { asyncHandler } from '../utils/async-handler.js';
-import { createServiceLog, updateServiceLog } from '../services/serviceVisit.service.js';
+import {
+    createServiceLog,
+    updateServiceLog,
+} from '../services/serviceVisit.service.js';
 
 const createServiceLogController = asyncHandler(async (req, res) => {
     const {
@@ -16,7 +19,6 @@ const createServiceLogController = asyncHandler(async (req, res) => {
         description,
         scheduledAt,
     } = req.body;
-
 
     const serviceLog = await createServiceLog({
         vehicleNumber,
