@@ -6,12 +6,24 @@ import { logger } from '../utils/logger.js';
 export const verifyJWT = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            throw new ApiError(
+                401,
+                'Unauthorized request'
+            );
+        }
 
         if (!authHeader?.startsWith('Bearer ')) {
             throw new ApiError(401, 'Unauthorized');
         }
 
         const token = authHeader.split(' ')[1];
+        if (!token) {
+            throw new ApiError(
+                401,
+                'Unauthorized request'
+            );
+        }
 
         const {
             data: { user },
