@@ -1,12 +1,13 @@
 import express from 'express';
 import {
-    createServiceLog,
-    updateServiceLog,
-} from '../controllers/serviceVisit.controllers.js';
+    createServiceLogController,
+    updateServiceLogController,
+} from '../controllers/serviceVisit.controller.js';
+import { verifyJWT } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.post('/services', createServiceLog);
-router.patch('/services/:id', updateServiceLog);
+router.post('/services', verifyJWT, createServiceLogController);
+router.patch('/services/:id', verifyJWT, updateServiceLogController);
 
 export default router;

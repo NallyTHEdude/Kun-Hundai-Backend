@@ -199,17 +199,14 @@ const updateServiceLog = async (serviceId, data) => {
     if (serviceStatus !== undefined) {
         updateData.serviceStatus = serviceStatus;
 
-        if (
-            serviceStatus === ServiceStatusEnum.COMPLETED &&
-            !serviceLog.completedAt
-        ) {
-            updateData.completedAt = new Date();
-        }
-
-        if (serviceStatus !== ServiceStatusEnum.COMPLETED) {
-            updateData.completedAt = null;
-        }
+    if (serviceStatus === ServiceStatusEnum.COMPLETED && !serviceLog.completedAt) {
+        updateData.completedAt = new Date();
     }
+
+    if (serviceStatus !== ServiceStatusEnum.COMPLETED) {
+        updateData.completedAt = null;
+    }
+}
 
     const updatedServiceLog = await prisma.serviceVisit.update({
         where: {
