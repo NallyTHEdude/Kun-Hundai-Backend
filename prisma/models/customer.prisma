@@ -1,5 +1,5 @@
 model Customer {
-  id          String   @id @db.Uuid
+  id          String   @id @default(uuid()) @db.Uuid
   fullName    String
   phoneNumber String   @unique
   address     String?
