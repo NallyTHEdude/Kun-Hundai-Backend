@@ -153,6 +153,13 @@ const updateServiceLog = async (serviceId, data) => {
         );
     }
 
+    if (serviceLog.serviceStatus === ServiceStatusEnum.COMPLETED) {
+        throw new ApiError(
+            400,
+            'Completed service logs cannot be edited.'
+        );
+    }
+
     const updateData = {
         updatedAt: new Date(),
     };
@@ -198,15 +205,18 @@ const updateServiceLog = async (serviceId, data) => {
 
     if (serviceStatus !== undefined) {
         updateData.serviceStatus = serviceStatus;
-
+        // completed cannot be set to pending
         if (
-            serviceStatus === ServiceStatusEnum.COMPLETED &&
-            !serviceLog.completedAt
-        ) {
-            updateData.completedAt = new Date();
+            serviceLog.serviceStatus === ServiceStatusEnum.COMPLETED && serviceStatus !== ServiceStatusEnum.COMPLETED) {
+            throw new ApiError(
+                400,
+                'Completed services cannot be modified.'
+            );
         }
 
-        if (serviceStatus !== ServiceStatusEnum.COMPLETED) {
+        if (serviceStatus === ServiceStatusEnum.COMPLETED &&!serviceLog.completedAt) {
+            updateData.completedAt = new Date();
+        } else if (serviceStatus !== ServiceStatusEnum.COMPLETED) {
             updateData.completedAt = null;
         }
     }
