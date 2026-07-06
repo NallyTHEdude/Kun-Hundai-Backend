@@ -12,7 +12,9 @@ const createServiceLogValidator = () => {
         body('vehicleType')
             .trim()
             .notEmpty()
-            .withMessage('Vehicle type is required'),
+            .withMessage('Vehicle type is required')
+            .isIn(VehicleType)
+            .withMessage(`Vehicle type must be one of: ${VehicleType.join(', ')}`),
 
         body('customerName')
             .trim()
