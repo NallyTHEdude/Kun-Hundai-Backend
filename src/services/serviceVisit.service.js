@@ -154,10 +154,7 @@ const updateServiceLog = async (serviceId, data) => {
     }
 
     if (serviceLog.serviceStatus === ServiceStatusEnum.COMPLETED) {
-        throw new ApiError(
-            400,
-            'Completed service logs cannot be edited.'
-        );
+        throw new ApiError(400, 'Completed service logs cannot be edited.');
     }
 
     const updateData = {
@@ -207,14 +204,16 @@ const updateServiceLog = async (serviceId, data) => {
         updateData.serviceStatus = serviceStatus;
         // completed cannot be set to pending
         if (
-            serviceLog.serviceStatus === ServiceStatusEnum.COMPLETED && serviceStatus !== ServiceStatusEnum.COMPLETED) {
-            throw new ApiError(
-                400,
-                'Completed services cannot be modified.'
-            );
+            serviceLog.serviceStatus === ServiceStatusEnum.COMPLETED &&
+            serviceStatus !== ServiceStatusEnum.COMPLETED
+        ) {
+            throw new ApiError(400, 'Completed services cannot be modified.');
         }
 
-        if (serviceStatus === ServiceStatusEnum.COMPLETED &&!serviceLog.completedAt) {
+        if (
+            serviceStatus === ServiceStatusEnum.COMPLETED &&
+            !serviceLog.completedAt
+        ) {
             updateData.completedAt = new Date();
         } else if (serviceStatus !== ServiceStatusEnum.COMPLETED) {
             updateData.completedAt = null;
@@ -263,7 +262,7 @@ const filterServiceLog = async (filters) => {
         where.vehicle = {
             vehicleNumber: {
                 contains: vehicleNumberUpper,
-                mode: "insensitive",
+                mode: 'insensitive',
             },
         };
     }
@@ -274,18 +273,18 @@ const filterServiceLog = async (filters) => {
             customer: {
                 phoneNumber: {
                     contains: customerNumber,
-                    mode: "insensitive",
+                    mode: 'insensitive',
                 },
             },
         };
     }
 
-    if(vehicleType){
+    if (vehicleType) {
         where.vehicle = {
             ...where.vehicle,
             vehicleType: {
                 contains: vehicleType,
-                mode: "insensitive",
+                mode: 'insensitive',
             },
         };
     }
@@ -299,14 +298,14 @@ const filterServiceLog = async (filters) => {
     }
 
     if (scheduledAt) {
-    const start = new Date(scheduledAt);
-    const end = new Date(scheduledAt);
-    end.setDate(end.getDate() + 1);
+        const start = new Date(scheduledAt);
+        const end = new Date(scheduledAt);
+        end.setDate(end.getDate() + 1);
 
-    where.scheduledAt = {
-        gte: start,
-        lt: end,
-    };
+        where.scheduledAt = {
+            gte: start,
+            lt: end,
+        };
     }
 
     if (completedAt) {
@@ -327,7 +326,7 @@ const filterServiceLog = async (filters) => {
             enteredBy: true,
         },
         orderBy: {
-            scheduledAt: "desc",
+            scheduledAt: 'desc',
         },
     });
 

@@ -14,7 +14,9 @@ const createServiceLogValidator = () => {
             .notEmpty()
             .withMessage('Vehicle type is required')
             .isIn(VehicleType)
-            .withMessage(`Vehicle type must be one of: ${VehicleType.join(', ')}`),
+            .withMessage(
+                `Vehicle type must be one of: ${VehicleType.join(', ')}`,
+            ),
 
         body('customerName')
             .trim()
@@ -98,24 +100,24 @@ const updateServiceLogValidator = () => {
 
 const filterServiceLogValidator = () => {
     return [
-        query('vehicleNumber')
-            .optional()
-            .trim(),
+        query('vehicleNumber').optional().trim(),
 
         query('vehicleType')
             .optional()
             .trim()
             .isIn(VehicleType)
-            .withMessage(`Vehicle type must be one of: ${VehicleType.join(', ')}`),
+            .withMessage(
+                `Vehicle type must be one of: ${VehicleType.join(', ')}`,
+            ),
 
-        query('customerNumber')
-            .optional()
-            .trim(),
+        query('customerNumber').optional().trim(),
 
         query('serviceStatus')
             .optional()
             .isIn(ServiceStatus)
-            .withMessage(`Service status must be one of: ${ServiceStatus.join(', ')}`),
+            .withMessage(
+                `Service status must be one of: ${ServiceStatus.join(', ')}`,
+            ),
 
         query('scheduledAt')
             .optional()
@@ -132,6 +134,6 @@ const filterServiceLogValidator = () => {
             .isUUID()
             .withMessage('Added by must be a valid UUID'),
     ];
-}
+};
 
 export { createServiceLogValidator, updateServiceLogValidator };
