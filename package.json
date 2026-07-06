@@ -6,6 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "nodemon src/index.js",
+        "build": "npx prisma generate",
+        "start": "node src/index.js",
         "prisma-reset": "npx prisma migrate reset"
     },
     "author": "",
