@@ -8,32 +8,10 @@ import {
 } from '../services/serviceVisit.service.js';
 
 const createServiceLogController = asyncHandler(async (req, res) => {
-    const {
-        vehicleNumber,
-        vehicleType,
-        customerName,
-        customerNumber,
-        customerAddress,
-        kilometersDriven,
-        serviceType,
-        serviceStatus,
-        description,
-        scheduledAt,
-    } = req.body;
+    const data = req.body;
+    data.entryBy = req.user.id;
 
-    const serviceLog = await createServiceLog({
-        vehicleNumber,
-        vehicleType,
-        customerName,
-        customerPhoneNumber,
-        customerAddress,
-        kilometersDriven,
-        serviceType,
-        serviceStatus,
-        description,
-        scheduledAt,
-        entryBy: req.user.id,
-    });
+    const serviceLog = await createServiceLog(data);
 
     if (!serviceLog) {
         throw new ApiError(500, 'Failed to create service log');
