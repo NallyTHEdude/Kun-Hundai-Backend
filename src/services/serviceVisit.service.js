@@ -10,7 +10,7 @@ const createServiceLog = async (data) => {
         vehicleNumber,
         vehicleType,
         customerName,
-        customerPhoneNumber,
+        customerNumber,
         customerAddress,
         kilometersDriven,
         serviceType,
@@ -38,7 +38,7 @@ const createServiceLog = async (data) => {
     const serviceLog = await prisma.$transaction(async (tx) => {
         let customer = await tx.customer.findUnique({
             where: {
-                phoneNumber: customerPhoneNumber,
+                phoneNumber: customerNumber,
             },
         });
 
@@ -46,7 +46,7 @@ const createServiceLog = async (data) => {
             customer = await tx.customer.create({
                 data: {
                     fullName: customerName,
-                    phoneNumber: customerPhoneNumber,
+                    phoneNumber: customerNumber,
                     address: customerAddress,
                     createdAt: now,
                     updatedAt: now,
@@ -235,4 +235,93 @@ const updateServiceLog = async (serviceId, data) => {
     return updatedServiceLog;
 };
 
-export { createServiceLog, updateServiceLog };
+const filterServiceLog = async (filters) => {
+    const {
+        vehicleNumber,
+        vehicleType,
+        customerNumber,
+        serviceStatus,
+        scheduledAt,
+        completedAt,
+        addedBy,
+    } = filters;
+
+    const where = {};
+
+    if (vehicleNumber) {
+        const vehicleNumberUpper = vehicleNumber.toUpperCase();
+        where.vehicle = {
+            vehicleNumber: {
+                contains: vehicleNumberUpper,
+                mode: "insensitive",
+            },
+        };
+    }
+
+    if (customerNumber) {
+        where.vehicle = {
+            ...where.vehicle,
+            customer: {
+                phoneNumber: {
+                    contains: customerNumber,
+                    mode: "insensitive",
+                },
+            },
+        };
+    }
+
+    if(vehicleType){
+        where.vehicle = {
+            ...where.vehicle,
+            vehicleType: {
+                contains: vehicleType,
+                mode: "insensitive",
+            },
+        };
+    }
+
+    if (serviceStatus) {
+        where.serviceStatus = serviceStatus;
+    }
+
+    if (addedBy) {
+        where.entryBy = addedBy;
+    }
+
+    if (scheduledAt) {
+    const start = new Date(scheduledAt);
+    const end = new Date(scheduledAt);
+    end.setDate(end.getDate() + 1);
+
+    where.scheduledAt = {
+        gte: start,
+        lt: end,
+    };
+    }
+
+    if (completedAt) {
+        const start = new Date(completedAt);
+        const end = new Date(completedAt);
+        end.setDate(end.getDate() + 1);
+
+        where.completedAt = {
+            gte: start,
+            lt: end,
+        };
+    }
+
+    const filteredData = await prisma.serviceVisit.findMany({
+        where,
+        include: {
+            vehicle: true,
+            enteredBy: true,
+        },
+        orderBy: {
+            scheduledAt: "desc",
+        },
+    });
+
+    return filteredData;
+};
+
+export { createServiceLog, updateServiceLog, filterServiceLog };

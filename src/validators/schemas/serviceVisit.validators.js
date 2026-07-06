@@ -1,5 +1,6 @@
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 import { ServiceStatus } from '../../constants/serviceVisit.constants.js';
+import { VehicleType } from '../../constants/vehicle.constants.js';
 
 const createServiceLogValidator = () => {
     return [
@@ -92,5 +93,43 @@ const updateServiceLogValidator = () => {
             .withMessage('Scheduled date must be a valid ISO date'),
     ];
 };
+
+const filterServiceLogValidator = () => {
+    return [
+        query('vehicleNumber')
+            .optional()
+            .trim(),
+
+        query('vehicleType')
+            .optional()
+            .trim()
+            .isIn(VehicleType)
+            .withMessage(`Vehicle type must be one of: ${VehicleType.join(', ')}`),
+
+        query('customerNumber')
+            .optional()
+            .trim(),
+
+        query('serviceStatus')
+            .optional()
+            .isIn(ServiceStatus)
+            .withMessage(`Service status must be one of: ${ServiceStatus.join(', ')}`),
+
+        query('scheduledAt')
+            .optional()
+            .isISO8601()
+            .withMessage('Scheduled date must be a valid ISO date'),
+
+        query('completedAt')
+            .optional()
+            .isISO8601()
+            .withMessage('Completed date must be a valid ISO date'),
+
+        query('addedBy')
+            .optional()
+            .isUUID()
+            .withMessage('Added by must be a valid UUID'),
+    ];
+}
 
 export { createServiceLogValidator, updateServiceLogValidator };

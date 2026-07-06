@@ -4,6 +4,7 @@ import { asyncHandler } from '../utils/async-handler.js';
 import {
     createServiceLog,
     updateServiceLog,
+    filterServiceLog
 } from '../services/serviceVisit.service.js';
 
 const createServiceLogController = asyncHandler(async (req, res) => {
@@ -11,7 +12,7 @@ const createServiceLogController = asyncHandler(async (req, res) => {
         vehicleNumber,
         vehicleType,
         customerName,
-        customerPhoneNumber,
+        customerNumber,
         customerAddress,
         kilometersDriven,
         serviceType,
@@ -65,4 +66,19 @@ const updateServiceLogController = asyncHandler(async (req, res) => {
         );
 });
 
-export { createServiceLogController, updateServiceLogController };
+const filterServiceLogController = asyncHandler(async (req, res) => {
+    const filters = req.query;
+
+    const serviceLogs = await filterServiceLog(filters);
+
+    return res
+        .json(
+            new ApiResponse(
+                200,
+                serviceLogs,
+                'Service logs retrieved successfully',
+            ),
+        );
+});
+
+export { createServiceLogController, updateServiceLogController, filterServiceLogController };
