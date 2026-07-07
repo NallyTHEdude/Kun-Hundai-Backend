@@ -141,7 +141,3 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
-
-#TODO: remove migrations later
-/generated/prisma
-prisma/migrations
