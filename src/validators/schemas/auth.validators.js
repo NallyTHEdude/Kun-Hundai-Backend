@@ -34,7 +34,7 @@ const registerUserValidator = () => {
             .notEmpty()
             .withMessage('Phone number is required')
             .matches(/^\+?\d{10,10}$/)
-            .withMessage('Phone number is not valid for india'),
+            .withMessage('Phone number should have numbers only and must be 10 digits long'),
 
         body('role')
             .notEmpty()
