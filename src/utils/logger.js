@@ -26,12 +26,15 @@ const prodFormat = winston.format.combine(
 );
 
 // creating logger instance for dev and prod
+const transports = isDevEnv
+    ? [new winston.transports.Console()]
+    : [
+          new winston.transports.Console(),
+          new winston.transports.File({ filename: 'logs/app.log' }),
+      ];
+
 export const logger = winston.createLogger({
     level: 'info',
     format: isDevEnv ? devFormat : prodFormat,
-    transports: [
-        isDevEnv
-            ? new winston.transports.Console()
-            : new winston.transports.File({ filename: 'logs/app.log' }),
-    ],
+    transports,
 });
