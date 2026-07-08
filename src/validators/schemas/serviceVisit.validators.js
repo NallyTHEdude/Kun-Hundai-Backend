@@ -66,6 +66,12 @@ const createServiceLogValidator = () => {
             .notEmpty()
             .withMessage('Service type is required'),
 
+        body('estimatedPrice')
+            .optional()
+            .toFloat()
+            .isFloat({ min: 0 })
+            .withMessage('Estimated price must be a valid number'),
+
         body('description')
             .trim()
             .notEmpty()
@@ -98,6 +104,12 @@ const updateServiceLogValidator = () => {
             .trim()
             .notEmpty()
             .withMessage('Service type cannot be empty'),
+
+        body('estimatedPrice')
+            .optional()
+            .toFloat()
+            .isFloat({ min: 0 })
+            .withMessage('Estimated price must be a valid number'),
 
         body('description')
             .optional()

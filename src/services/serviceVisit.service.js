@@ -18,6 +18,7 @@ const createServiceLog = async (data) => {
         customerAddress,
         kilometersDriven,
         serviceType,
+        estimatedPrice,
         serviceStatus,
         description,
         scheduledAt,
@@ -116,6 +117,7 @@ const createServiceLog = async (data) => {
                 entryBy,
                 kilometersDriven,
                 serviceType,
+                estimatedPrice: estimatedPrice ?? 0.0,
                 description,
                 serviceStatus: serviceStatus ?? ServiceStatusEnum.PENDING,
                 scheduledAt: scheduledDate,
@@ -150,6 +152,7 @@ const updateServiceLog = async (serviceId, data) => {
     const {
         kilometersDriven,
         serviceType,
+        estimatedPrice,
         description,
         serviceStatus,
         scheduledAt,
@@ -186,6 +189,10 @@ const updateServiceLog = async (serviceId, data) => {
 
     if (serviceType !== undefined) {
         updateData.serviceType = serviceType;
+    }
+
+    if (estimatedPrice !== undefined) {
+        updateData.estimatedPrice = estimatedPrice;
     }
 
     if (description !== undefined) {
