@@ -76,14 +76,6 @@ const registerUser = async ({
             }
         }
 
-        // unique constraint violation error code for Prisma is P2002
-        if (
-            error instanceof Prisma.PrismaClientKnownRequestError &&
-            error.code === 'P2002'
-        ) {
-            throw new ApiError(400, 'User already exists');
-        }
-
         throw error;
     }
 };
