@@ -3,6 +3,7 @@ import cors from 'cors';
 import { errorHandler } from './utils/global-error-handler.js';
 import helmet from 'helmet';
 import { ApiError } from './utils/api-error.js';
+import { config } from './config/index.js';
 
 const app = express();
 
@@ -19,8 +20,8 @@ app.use(
 app.use(
     cors({
         origin:
-            process.env.CORS_ORIGIN?.split(',') ||
-            `${process.env.BASE_URL}:${process.env.PORT}`,
+            config.CORS_ORIGIN?.split(',') ||
+            `${config.BASE_URL}:${config.PORT}`,
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
         allowedHeaders: ['Content-Type', 'Authorization'],
