@@ -21,10 +21,13 @@ const validate = (validators) => {
             groupedErrors.get(err.path).push(err.msg);
         }
 
-        const extractedErrors = Array.from(groupedErrors, ([field, messages]) => ({
-            field,
-            errors: messages,
-        }));
+        const extractedErrors = Array.from(
+            groupedErrors,
+            ([field, messages]) => ({
+                field,
+                errors: messages,
+            }),
+        );
 
         return next(
             new ApiError(422, 'Received data is invalid', extractedErrors),

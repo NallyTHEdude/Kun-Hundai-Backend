@@ -16,49 +16,42 @@ const registerUser = async ({
     let authUserId;
 
     try {
-
         const userExists = await prisma.user.findFirst({
             where: {
-                OR: [
-                    { email },
-                    { phoneNumber }
-                ]
-            }
+                OR: [{ email }, { phoneNumber }],
+            },
         });
 
         if (userExists) {
             if (userExists.email === email) {
-                throw new ApiError(400, "user with email already exists");
+                throw new ApiError(400, 'user with email already exists');
             }
 
             if (userExists.phoneNumber === phoneNumber) {
-                throw new ApiError(400, "user with phone number already exists");
+                throw new ApiError(
+                    400,
+                    'user with phone number already exists',
+                );
             }
         }
-        
+
         if (!role) {
             role = UserRolesEnum.EMPLOYEE;
         }
-        
+
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
         });
-        
+
         if (error) {
-            throw new ApiError(
-                400,
-                error.message
-            );
+            throw new ApiError(400, error.message);
         }
 
         if (!data.user) {
-            throw new ApiError(
-                500, 
-                "Failed to create authentication user"
-            );
+            throw new ApiError(500, 'Failed to create authentication user');
         }
-        
+
         authUserId = data.user.id;
 
         const newUser = await prisma.user.create({
@@ -79,16 +72,16 @@ const registerUser = async ({
             try {
                 await supabase.auth.admin.deleteUser(authUserId);
             } catch (cleanupError) {
-                logger.error("Failed to rollback auth user", cleanupError);
+                logger.error('Failed to rollback auth user', cleanupError);
             }
         }
 
         // unique constraint violation error code for Prisma is P2002
         if (
             error instanceof Prisma.PrismaClientKnownRequestError &&
-            error.code === "P2002"
+            error.code === 'P2002'
         ) {
-            throw new ApiError(400, "User already exists");
+            throw new ApiError(400, 'User already exists');
         }
 
         throw error;
