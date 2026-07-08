@@ -8,8 +8,10 @@ import {
 } from '../services/serviceVisit.service.js';
 
 const createServiceLogController = asyncHandler(async (req, res) => {
-    const data = req.body;
-    data.entryBy = req.user.id;
+    const data = {
+        ...req.body,
+        entryBy: req.user.id,
+    };
 
     const serviceLog = await createServiceLog(data);
 

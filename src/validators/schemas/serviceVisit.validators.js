@@ -18,6 +18,27 @@ const createServiceLogValidator = () => {
                 `Vehicle type must be one of: ${VehicleType.join(', ')}`,
             ),
 
+        body('vehicleMake')
+            .trim()
+            .notEmpty()
+            .withMessage('Vehicle make is required'),
+
+        body('vehicleModel')
+            .trim()
+            .notEmpty()
+            .withMessage('Vehicle model is required'),
+
+        body('vehicleYear')
+            .notEmpty()
+            .withMessage('Vehicle year is required')
+            .isInt({ min: 1886 })
+            .withMessage('Vehicle year must be a valid year'),
+
+        body('vehicleColor')
+            .trim()
+            .notEmpty()
+            .withMessage('Vehicle color is required'),
+
         body('customerName')
             .trim()
             .notEmpty()
@@ -25,12 +46,12 @@ const createServiceLogValidator = () => {
             .isLength({ min: 3, max: 50 })
             .withMessage('Customer name must be between 3 and 50 characters'),
 
-        body('customerPhoneNumber')
+        body('customerNumber')
             .trim()
             .notEmpty()
-            .withMessage('Customer phone number is required')
+            .withMessage('Customer number is required')
             .matches(/^\+?\d{10}$/)
-            .withMessage('Customer phone number is invalid'),
+            .withMessage('Customer number is invalid'),
 
         body('customerAddress').optional().trim(),
 

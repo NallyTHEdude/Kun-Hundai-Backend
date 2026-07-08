@@ -9,6 +9,10 @@ const createServiceLog = async (data) => {
     const {
         vehicleNumber,
         vehicleType,
+        vehicleMake,
+        vehicleModel,
+        vehicleYear,
+        vehicleColor,
         customerName,
         customerNumber,
         customerAddress,
@@ -65,6 +69,10 @@ const createServiceLog = async (data) => {
                 data: {
                     vehicleNumber,
                     vehicleType,
+                    vehicleMake,
+                    vehicleModel,
+                    vehicleYear,
+                    vehicleColor,
                     customerId: customer.id,
                     createdAt: now,
                     updatedAt: now,
@@ -74,6 +82,17 @@ const createServiceLog = async (data) => {
             throw new ApiError(
                 400,
                 'Vehicle number belongs to another customer.',
+            );
+        } else if (
+            vehicle.vehicleType !== vehicleType ||
+            vehicle.vehicleMake !== vehicleMake ||
+            vehicle.vehicleModel !== vehicleModel ||
+            vehicle.vehicleYear !== vehicleYear ||
+            vehicle.vehicleColor !== vehicleColor
+        ) {
+            throw new ApiError(
+                400,
+                'Vehicle details do not match the existing vehicle record.',
             );
         }
 
