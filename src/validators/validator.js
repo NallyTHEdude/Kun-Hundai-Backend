@@ -11,9 +11,19 @@ const validate = (validators) => {
             return next();
         }
 
-        const extractedErrors = errors.array().map((err) => ({
-            field: err.path,
-            message: err.msg,
+        const groupedErrors = new Map();
+
+        for (const err of errors.array()) {
+            if (!groupedErrors.has(err.path)) {
+                groupedErrors.set(err.path, []);
+            }
+
+            groupedErrors.get(err.path).push(err.msg);
+        }
+
+        const extractedErrors = Array.from(groupedErrors, ([field, messages]) => ({
+            field,
+            errors: messages,
         }));
 
         return next(
