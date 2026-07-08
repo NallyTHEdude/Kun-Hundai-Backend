@@ -25,6 +25,7 @@ CREATE TABLE "ServiceVisit" (
     "serviceType" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "serviceStatus" "ServiceStatusEnum" NOT NULL,
+    "estimatedPrice" DOUBLE PRECISION NOT NULL,
     "scheduledAt" TIMESTAMPTZ NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL,
     "updatedAt" TIMESTAMPTZ NOT NULL,
@@ -52,6 +53,10 @@ CREATE TABLE "Vehicle" (
     "customerId" UUID NOT NULL,
     "vehicleNumber" TEXT NOT NULL,
     "vehicleType" TEXT NOT NULL,
+    "vehicleMake" TEXT NOT NULL,
+    "vehicleModel" TEXT NOT NULL,
+    "vehicleYear" INTEGER NOT NULL,
+    "vehicleColor" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL,
     "updatedAt" TIMESTAMPTZ NOT NULL,
 
