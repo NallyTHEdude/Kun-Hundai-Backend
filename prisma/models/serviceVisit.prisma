@@ -6,6 +6,7 @@ model ServiceVisit {
   serviceType      String
   description      String
   serviceStatus    ServiceStatusEnum
+  estimatedPrice   Float
   scheduledAt      DateTime          @db.Timestamptz
   createdAt        DateTime          @db.Timestamptz
   updatedAt        DateTime          @db.Timestamptz
