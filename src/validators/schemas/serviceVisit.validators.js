@@ -136,4 +136,4 @@ const filterServiceLogValidator = () => {
     ];
 };
 
-export { createServiceLogValidator, updateServiceLogValidator };
+export { createServiceLogValidator, updateServiceLogValidator, filterServiceLogValidator };
