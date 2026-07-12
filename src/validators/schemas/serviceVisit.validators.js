@@ -1,4 +1,4 @@
-import { body, query } from 'express-validator';
+import { body, query, param } from 'express-validator';
 import { ServiceStatus } from '../../constants/serviceVisit.constants.js';
 import { VehicleType } from '../../constants/vehicle.constants.js';
 
@@ -89,6 +89,7 @@ const createServiceLogValidator = () => {
             .withMessage('Scheduled date is required')
             .isISO8601()
             .withMessage('Scheduled date must be a valid ISO date'),
+        
     ];
 };
 
@@ -169,4 +170,12 @@ const filterServiceLogValidator = () => {
     ];
 };
 
-export { createServiceLogValidator, updateServiceLogValidator, filterServiceLogValidator };
+const getServiceLogByIdValidator = () => {
+    return [
+        param('id')
+            .isUUID()
+            .withMessage('ID must be a valid UUID'),
+    ];
+};
+
+export { createServiceLogValidator, updateServiceLogValidator, filterServiceLogValidator, getServiceLogByIdValidator };
