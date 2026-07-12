@@ -5,6 +5,7 @@ import {
     createServiceLog,
     updateServiceLog,
     filterServiceLog,
+    getServiceLogById,
 } from '../services/serviceVisit.service.js';
 
 const createServiceLogController = asyncHandler(async (req, res) => {
@@ -60,8 +61,22 @@ const filterServiceLogController = asyncHandler(async (req, res) => {
     );
 });
 
+const getServiceLogByIdController = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const serviceLog = await getServiceLogById(id);
+   
+    return res.json(
+        new ApiResponse(
+            200,
+            serviceLog,
+            'Service log retrieved successfully',
+        ),
+    );
+});
+
 export {
     createServiceLogController,
     updateServiceLogController,
     filterServiceLogController,
+    getServiceLogByIdController,
 };
