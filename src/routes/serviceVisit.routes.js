@@ -3,12 +3,14 @@ import {
     createServiceLogController,
     updateServiceLogController,
     filterServiceLogController,
+    getServiceLogByIdController,
 } from '../controllers/serviceVisit.controller.js';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 import {
     createServiceLogValidator,
     updateServiceLogValidator,
     filterServiceLogValidator,
+    getServiceLogByIdValidator,
 } from '../validators/schemas/serviceVisit.validators.js';
 import { validate } from '../validators/validator.js';
 
@@ -32,5 +34,7 @@ router.post(
     validate(filterServiceLogValidator()),
     filterServiceLogController,
 );
+
+router.get('/services/:id', verifyJWT, validate(getServiceLogByIdValidator()), getServiceLogByIdController);
 
 export default router;
