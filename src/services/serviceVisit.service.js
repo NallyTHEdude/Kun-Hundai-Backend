@@ -278,7 +278,6 @@ const filterServiceLog = async (filters) => {
         serviceStatus,
         scheduledAt,
         completedAt,
-        addedBy,
     } = filters;
 
     const where = {};
@@ -319,10 +318,6 @@ const filterServiceLog = async (filters) => {
         where.serviceStatus = serviceStatus;
     }
 
-    if (addedBy) {
-        where.entryBy = addedBy;
-    }
-
     if (scheduledAt) {
         const start = new Date(scheduledAt);
         const end = new Date(scheduledAt);
@@ -359,4 +354,25 @@ const filterServiceLog = async (filters) => {
     return filteredData;
 };
 
-export { createServiceLog, updateServiceLog, filterServiceLog };
+const getServiceLogById = async (serviceId) => {
+    const serviceLog = await prisma.serviceVisit.findUnique({
+        where: {
+            id: serviceId,
+        },
+        include: {
+            vehicle: {
+                include: {
+                    customer: true,
+                },
+            },
+            // enteredBy: true,
+        },
+    });
+
+    if (!serviceLog) {
+        throw new ApiError(404, 'Service log not found.');
+    }
+
+    return serviceLog;
+};
+export { createServiceLog, updateServiceLog, filterServiceLog, getServiceLogById };
