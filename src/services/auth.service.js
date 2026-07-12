@@ -16,43 +16,59 @@ const registerUser = async ({
     let authUserId;
 
     try {
-        const userExists = await prisma.user.findFirst({
-            where: {
-                OR: [{ email }, { phoneNumber }],
-            },
-        });
+        const dbUsers = await prisma.user.count()
+        const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
 
-        if (userExists) {
-            if (userExists.email === email) {
-                throw new ApiError(400, 'user with email already exists');
-            }
-
-            if (userExists.phoneNumber === phoneNumber) {
-                throw new ApiError(
-                    400,
-                    'user with phone number already exists',
-                );
-            }
+        if (userError) {
+            throw new ApiError(500, userError.message);
         }
+
+        const authUsers = userData.users.length;
+
+        if (dbUsers > 0 || authUsers > 0) {
+            throw new ApiError(
+                400,
+                'Registration is disabled. An account already exists.',
+            );
+        }
+
+        // const userExists = await prisma.user.findFirst({
+        //     where: {
+        //         OR: [{ email }, { phoneNumber }],
+        //     },
+        // });
+
+        // if (userExists) {
+        //     if (userExists.email === email) {
+        //         throw new ApiError(400, 'user with email already exists');
+        //     }
+
+        //     if (userExists.phoneNumber === phoneNumber) {
+        //         throw new ApiError(
+        //             400,
+        //             'user with phone number already exists',
+        //         );
+        //     }
+        // }
 
         if (!role) {
             role = UserRolesEnum.EMPLOYEE;
         }
 
-        const { data, error } = await supabase.auth.signUp({
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
             email,
             password,
         });
 
-        if (error) {
-            throw new ApiError(400, error.message);
+        if (signUpError) {
+            throw new ApiError(400, signUpError.message);
         }
 
-        if (!data.user) {
+        if (!signUpData.user) {
             throw new ApiError(500, 'Failed to create authentication user');
         }
 
-        authUserId = data.user.id;
+        authUserId = signUpData.user.id;
 
         const newUser = await prisma.user.create({
             data: {
