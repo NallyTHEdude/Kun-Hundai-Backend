@@ -37,11 +37,9 @@ const getVehicleServiceHistory = async (vehicleId) => {
 			vehicleId,
 		},
 		include: {
-			enteredBy: {
-				select: {
-					id: true,
-					fullName: true,
-					email: true,
+			vehicle: {
+				include: {
+					customer: true,
 				},
 			},
 		},
