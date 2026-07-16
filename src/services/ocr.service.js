@@ -49,7 +49,7 @@ const extractVehicleNumber = async (imageBuffer) => {
             throw error;
         }
 
-        logger.error(error);
+        // logger.error(error);
 
         throw new ApiError(500, 'Failed to process image for OCR.');
     }
