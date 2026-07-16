@@ -23,14 +23,14 @@ const extractVehicleNumber = async (imageBuffer) => {
             data: { text },
         } = await Tesseract.recognize(processedImage, 'eng');
 
-        logger.info('Raw OCR Output:');
-        logger.info(text);
+        // logger.info('Raw OCR Output:');
+        // logger.info(text);
 
         // Remove everything except letters and digits
         const normalizedText = text.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
 
-        logger.info('Normalized OCR Output:');
-        logger.info(normalizedText);
+        // logger.info('Normalized OCR Output:');
+        // logger.info(normalizedText);
 
         // Indian registration number
         const match = normalizedText.match(
