@@ -1,16 +1,23 @@
 model Vehicle {
-  id            String   @id @default(uuid()) @db.Uuid
-  customerId    String   @db.Uuid
-  vehicleNumber String   @unique
-  vehicleType   String
+  id             String   @id @default(uuid()) @db.Uuid
+  customerId     String   @db.Uuid
+  vehicleNumber  String   @unique
+  vehicleType    VehicleTypeEnum
   vehicleModel   String
-  vehicleYear    Int
-  createdAt     DateTime @db.Timestamptz
-  updatedAt     DateTime @db.Timestamptz
+  createdAt      DateTime @db.Timestamptz
+  updatedAt      DateTime @db.Timestamptz
 
   customer      Customer       @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   serviceVisits ServiceVisit[]
 
   @@index([customerId], map: "Vehicle_customer_idx")
   @@map("Vehicle")
+}
+
+enum VehicleTypeEnum {
+  SUV
+  HATCHBACK
+  SEDAN
+  EV
+  OTHER
 }

@@ -1,8 +1,9 @@
-export const VehicleTypeEnum = {
-    CAR: 'CAR',
-    BIKE: 'MOTORCYCLE',
-    AUTO: 'AUTO',
-    OTHERS: 'OTHERS',
-};
+export const VehicleTypeEnum = Object.freeze({
+    SUV: 'SUV',
+    HATCHBACK: 'HATCHBACK',
+    SEDAN: 'SEDAN',
+    EV: 'EV',
+    OTHER: 'OTHER'
+});
 
 export const VehicleType = Object.values(VehicleTypeEnum);

@@ -4,6 +4,7 @@ import {
     updateServiceLogController,
     filterServiceLogController,
     getServiceLogByIdController,
+    getAllServiceLogsController
 } from '../controllers/serviceVisit.controller.js';
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 import {
@@ -17,24 +18,25 @@ import { validate } from '../validators/validator.js';
 const router = express.Router();
 
 router.post(
-    '/services',
+    '/create',
     verifyJWT,
     validate(createServiceLogValidator()),
     createServiceLogController,
 );
 router.patch(
-    '/services/:id',
+    '/:id',
     verifyJWT,
     validate(updateServiceLogValidator()),
     updateServiceLogController,
 );
-router.post(
+router.get(
     '/filter',
     verifyJWT,
     validate(filterServiceLogValidator()),
     filterServiceLogController,
 );
+router.get('/all', verifyJWT, getAllServiceLogsController);
 
-router.get('/services/:id', verifyJWT, validate(getServiceLogByIdValidator()), getServiceLogByIdController);
+router.get('/:id', verifyJWT, validate(getServiceLogByIdValidator()), getServiceLogByIdController);
 
 export default router;

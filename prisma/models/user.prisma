@@ -7,7 +7,6 @@ model User {
   createdAt   DateTime     @db.Timestamptz
   updatedAt   DateTime     @db.Timestamptz
 
-  serviceVisits ServiceVisit[] @relation("UserServiceVisits")
 
   @@map("User")
 }

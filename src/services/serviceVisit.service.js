@@ -9,28 +9,13 @@ const createServiceLog = async (data) => {
     const {
         vehicleNumber,
         vehicleType,
-        vehicleMake,
         vehicleModel,
-        vehicleYear,
-        vehicleColor,
         customerName,
         customerNumber,
-        customerAddress,
         kilometersDriven,
-        serviceType,
-        estimatedPrice,
-        serviceStatus,
         description,
         scheduledAt,
-        entryBy,
     } = data;
-
-    if (serviceStatus && !ServiceStatus.includes(serviceStatus)) {
-        throw new ApiError(
-            400,
-            `Invalid service status. Allowed values are: ${ServiceStatus.join(', ')}`,
-        );
-    }
 
     const scheduledDate = new Date(scheduledAt);
 
@@ -52,7 +37,6 @@ const createServiceLog = async (data) => {
                 data: {
                     fullName: customerName,
                     phoneNumber: customerNumber,
-                    address: customerAddress,
                     createdAt: now,
                     updatedAt: now,
                 },
@@ -70,10 +54,7 @@ const createServiceLog = async (data) => {
                 data: {
                     vehicleNumber,
                     vehicleType,
-                    vehicleMake,
                     vehicleModel,
-                    vehicleYear,
-                    vehicleColor,
                     customerId: customer.id,
                     createdAt: now,
                     updatedAt: now,
@@ -86,10 +67,7 @@ const createServiceLog = async (data) => {
             );
         } else if (
             vehicle.vehicleType !== vehicleType ||
-            vehicle.vehicleMake !== vehicleMake ||
-            vehicle.vehicleModel !== vehicleModel ||
-            vehicle.vehicleYear !== vehicleYear ||
-            vehicle.vehicleColor !== vehicleColor
+            vehicle.vehicleModel !== vehicleModel
         ) {
             throw new ApiError(
                 400,
@@ -114,15 +92,11 @@ const createServiceLog = async (data) => {
         const serviceVisit = await tx.serviceVisit.create({
             data: {
                 vehicleId: vehicle.id,
-                entryBy,
                 kilometersDriven,
-                serviceType,
-                estimatedPrice: estimatedPrice ?? 0.0,
                 description,
-                serviceStatus: serviceStatus ?? ServiceStatusEnum.PENDING,
+                serviceStatus: ServiceStatusEnum.PENDING,
                 scheduledAt: scheduledDate,
-                completedAt:
-                    serviceStatus === ServiceStatusEnum.COMPLETED ? now : null,
+                completedAt: null,
                 createdAt: now,
                 updatedAt: now,
             },
@@ -130,13 +104,6 @@ const createServiceLog = async (data) => {
                 vehicle: {
                     include: {
                         customer: true,
-                    },
-                },
-                enteredBy: {
-                    select: {
-                        id: true,
-                        fullName: true,
-                        email: true,
                     },
                 },
             },
@@ -151,8 +118,6 @@ const createServiceLog = async (data) => {
 const updateServiceLog = async (serviceId, data) => {
     const {
         kilometersDriven,
-        serviceType,
-        estimatedPrice,
         description,
         serviceStatus,
         scheduledAt,
@@ -185,14 +150,6 @@ const updateServiceLog = async (serviceId, data) => {
 
     if (kilometersDriven !== undefined) {
         updateData.kilometersDriven = kilometersDriven;
-    }
-
-    if (serviceType !== undefined) {
-        updateData.serviceType = serviceType;
-    }
-
-    if (estimatedPrice !== undefined) {
-        updateData.estimatedPrice = estimatedPrice;
     }
 
     if (description !== undefined) {
@@ -228,13 +185,6 @@ const updateServiceLog = async (serviceId, data) => {
 
     if (serviceStatus !== undefined) {
         updateData.serviceStatus = serviceStatus;
-        // completed cannot be set to pending
-        if (
-            serviceLog.serviceStatus === ServiceStatusEnum.COMPLETED &&
-            serviceStatus !== ServiceStatusEnum.COMPLETED
-        ) {
-            throw new ApiError(400, 'Completed services cannot be modified.');
-        }
 
         if (
             serviceStatus === ServiceStatusEnum.COMPLETED &&
@@ -255,13 +205,6 @@ const updateServiceLog = async (serviceId, data) => {
             vehicle: {
                 include: {
                     customer: true,
-                },
-            },
-            enteredBy: {
-                select: {
-                    id: true,
-                    fullName: true,
-                    email: true,
                 },
             },
         },
@@ -308,8 +251,7 @@ const filterServiceLog = async (filters) => {
         where.vehicle = {
             ...where.vehicle,
             vehicleType: {
-                contains: vehicleType,
-                mode: 'insensitive',
+                equals: vehicleType,
             },
         };
     }
@@ -343,8 +285,11 @@ const filterServiceLog = async (filters) => {
     const filteredData = await prisma.serviceVisit.findMany({
         where,
         include: {
-            vehicle: true,
-            enteredBy: true,
+            vehicle: {
+                include: {
+                    customer: true,
+                },
+            },
         },
         orderBy: {
             scheduledAt: 'desc',
@@ -365,7 +310,6 @@ const getServiceLogById = async (serviceId) => {
                     customer: true,
                 },
             },
-            // enteredBy: true,
         },
     });
 
@@ -375,4 +319,21 @@ const getServiceLogById = async (serviceId) => {
 
     return serviceLog;
 };
-export { createServiceLog, updateServiceLog, filterServiceLog, getServiceLogById };
+
+const getAllServiceLogs = async () => {
+    const serviceLogs = await prisma.serviceVisit.findMany({
+        include: {
+            vehicle: {
+                include: {
+                    customer: true,
+                },
+            },
+        },
+        orderBy: {
+            createdAt: 'desc',
+        },
+    });
+    return serviceLogs;
+};
+
+export { createServiceLog, updateServiceLog, filterServiceLog, getServiceLogById, getAllServiceLogs };

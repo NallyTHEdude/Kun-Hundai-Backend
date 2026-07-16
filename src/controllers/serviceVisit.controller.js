@@ -6,12 +6,12 @@ import {
     updateServiceLog,
     filterServiceLog,
     getServiceLogById,
+    getAllServiceLogs,
 } from '../services/serviceVisit.service.js';
 
 const createServiceLogController = asyncHandler(async (req, res) => {
     const data = {
         ...req.body,
-        entryBy: req.user.id,
     };
 
     const serviceLog = await createServiceLog(data);
@@ -74,9 +74,21 @@ const getServiceLogByIdController = asyncHandler(async (req, res) => {
     );
 });
 
+const getAllServiceLogsController = asyncHandler(async (req, res) => {
+    const serviceLogs = await getAllServiceLogs();
+    return res.json(
+        new ApiResponse(
+            200,
+            serviceLogs,
+            'All service logs retrieved successfully',
+        )
+    );
+});
+
 export {
     createServiceLogController,
     updateServiceLogController,
     filterServiceLogController,
     getServiceLogByIdController,
+    getAllServiceLogsController
 };

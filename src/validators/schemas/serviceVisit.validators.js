@@ -28,11 +28,11 @@ const createServiceLogValidator = () => {
             .notEmpty()
             .withMessage('Vehicle model is required'),
 
-        body('vehicleYear')
-            .notEmpty()
-            .withMessage('Vehicle year is required')
-            .isInt({ min: 1886 })
-            .withMessage('Vehicle year must be a valid year'),
+        // body('vehicleYear')
+        //     .notEmpty()
+        //     .withMessage('Vehicle year is required')
+        //     .isInt({ min: 1886 })
+        //     .withMessage('Vehicle year must be a valid year'),
 
         // body('vehicleColor')
         //     .trim()
@@ -163,10 +163,6 @@ const filterServiceLogValidator = () => {
             .isISO8601()
             .withMessage('Completed date must be a valid ISO date'),
 
-        query('addedBy')
-            .optional()
-            .isUUID()
-            .withMessage('Added by must be a valid UUID'),
     ];
 };
 

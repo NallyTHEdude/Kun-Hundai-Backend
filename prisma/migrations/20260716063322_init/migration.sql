@@ -4,12 +4,14 @@ CREATE TYPE "ServiceStatusEnum" AS ENUM ('COMPLETED', 'PENDING', 'CANCELLED', 'I
 -- CreateEnum
 CREATE TYPE "UserRoleEnum" AS ENUM ('ADMIN', 'EMPLOYEE');
 
+-- CreateEnum
+CREATE TYPE "VehicleTypeEnum" AS ENUM ('SUV', 'HATCHBACK', 'SEDAN', 'EV', 'OTHER');
+
 -- CreateTable
 CREATE TABLE "Customer" (
     "id" UUID NOT NULL,
     "fullName" TEXT NOT NULL,
     "phoneNumber" TEXT NOT NULL,
-    "address" TEXT,
     "createdAt" TIMESTAMPTZ NOT NULL,
     "updatedAt" TIMESTAMPTZ NOT NULL,
 
@@ -20,12 +22,9 @@ CREATE TABLE "Customer" (
 CREATE TABLE "ServiceVisit" (
     "id" UUID NOT NULL,
     "vehicleId" UUID NOT NULL,
-    "entryBy" UUID NOT NULL,
     "kilometersDriven" INTEGER NOT NULL,
-    "serviceType" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "serviceStatus" "ServiceStatusEnum" NOT NULL,
-    "estimatedPrice" DOUBLE PRECISION NOT NULL,
     "scheduledAt" TIMESTAMPTZ NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL,
     "updatedAt" TIMESTAMPTZ NOT NULL,
@@ -52,11 +51,8 @@ CREATE TABLE "Vehicle" (
     "id" UUID NOT NULL,
     "customerId" UUID NOT NULL,
     "vehicleNumber" TEXT NOT NULL,
-    "vehicleType" TEXT NOT NULL,
-    "vehicleMake" TEXT NOT NULL,
+    "vehicleType" "VehicleTypeEnum" NOT NULL,
     "vehicleModel" TEXT NOT NULL,
-    "vehicleYear" INTEGER NOT NULL,
-    "vehicleColor" TEXT NOT NULL,
     "createdAt" TIMESTAMPTZ NOT NULL,
     "updatedAt" TIMESTAMPTZ NOT NULL,
 
@@ -71,9 +67,6 @@ CREATE INDEX "ServiceVisit_vehicle_history_idx" ON "ServiceVisit"("vehicleId", "
 
 -- CreateIndex
 CREATE INDEX "ServiceVisit_status_filter_idx" ON "ServiceVisit"("serviceStatus", "scheduledAt");
-
--- CreateIndex
-CREATE INDEX "ServiceVisit_user_filter_idx" ON "ServiceVisit"("entryBy", "createdAt");
 
 -- CreateIndex
 CREATE INDEX "ServiceVisit_scheduledAt_idx" ON "ServiceVisit"("scheduledAt");
@@ -98,9 +91,6 @@ CREATE INDEX "Vehicle_customer_idx" ON "Vehicle"("customerId");
 
 -- AddForeignKey
 ALTER TABLE "ServiceVisit" ADD CONSTRAINT "ServiceVisit_vehicleId_fkey" FOREIGN KEY ("vehicleId") REFERENCES "Vehicle"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE "ServiceVisit" ADD CONSTRAINT "ServiceVisit_entryBy_fkey" FOREIGN KEY ("entryBy") REFERENCES "User"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "Vehicle" ADD CONSTRAINT "Vehicle_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "Customer"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
