@@ -33,12 +33,13 @@ import healthCheckRouter from './routes/healthCheck.routes.js';
 import authRouter from './routes/auth.routes.js';
 import vehicleServiceRouter from './routes/serviceVisit.routes.js';
 import vehicleRouter from './routes/vehicle.routes.js';
-
+import OCR_Router from './routes/ocr.routes.js';
 //routes
 app.use('/api/health', healthCheckRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/vehicleService', vehicleServiceRouter);
 app.use('/api/vehicle', vehicleRouter);
+app.use('/api/ocr', OCR_Router);
 
 // BASE route
 app.get('/', (req, res) => {
