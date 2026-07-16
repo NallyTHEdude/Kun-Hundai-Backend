@@ -3,7 +3,6 @@ model ServiceVisit {
   vehicleId        String            @db.Uuid
   entryBy          String            @db.Uuid
   kilometersDriven Int
-  serviceType      String
   description      String
   serviceStatus    ServiceStatusEnum
   estimatedPrice   Float

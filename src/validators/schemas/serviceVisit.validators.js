@@ -18,10 +18,10 @@ const createServiceLogValidator = () => {
                 `Vehicle type must be one of: ${VehicleType.join(', ')}`,
             ),
 
-        body('vehicleMake')
-            .trim()
-            .notEmpty()
-            .withMessage('Vehicle make is required'),
+        // body('vehicleMake')
+        //     .trim()
+        //     .notEmpty()
+        //     .withMessage('Vehicle make is required'),
 
         body('vehicleModel')
             .trim()
@@ -34,10 +34,10 @@ const createServiceLogValidator = () => {
             .isInt({ min: 1886 })
             .withMessage('Vehicle year must be a valid year'),
 
-        body('vehicleColor')
-            .trim()
-            .notEmpty()
-            .withMessage('Vehicle color is required'),
+        // body('vehicleColor')
+        //     .trim()
+        //     .notEmpty()
+        //     .withMessage('Vehicle color is required'),
 
         body('customerName')
             .trim()
@@ -53,7 +53,7 @@ const createServiceLogValidator = () => {
             .matches(/^\+?\d{10}$/)
             .withMessage('Customer number is invalid'),
 
-        body('customerAddress').optional().trim(),
+        // body('customerAddress').optional().trim(),
 
         body('kilometersDriven')
             .notEmpty()
@@ -61,28 +61,28 @@ const createServiceLogValidator = () => {
             .isInt({ min: 0 })
             .withMessage('Kilometers driven must be a positive number'),
 
-        body('serviceType')
-            .trim()
-            .notEmpty()
-            .withMessage('Service type is required'),
+        // body('serviceType')
+        //     .trim()
+        //     .notEmpty()
+        //     .withMessage('Service type is required'),
 
-        body('estimatedPrice')
-            .optional()
-            .toFloat()
-            .isFloat({ min: 0 })
-            .withMessage('Estimated price must be a valid number'),
+        // body('estimatedPrice')
+        //     .optional()
+        //     .toFloat()
+        //     .isFloat({ min: 0 })
+        //     .withMessage('Estimated price must be a valid number'),
 
         body('description')
             .trim()
             .notEmpty()
             .withMessage('Description is required'),
 
-        body('serviceStatus')
-            .optional()
-            .isIn(ServiceStatus)
-            .withMessage(
-                `Service status must be one of: ${ServiceStatus.join(', ')}`,
-            ),
+        // body('serviceStatus')
+        //     .optional()
+        //     .isIn(ServiceStatus)
+        //     .withMessage(
+        //         `Service status must be one of: ${ServiceStatus.join(', ')}`,
+        //     ),
 
         body('scheduledAt')
             .notEmpty()

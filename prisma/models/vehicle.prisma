@@ -3,10 +3,8 @@ model Vehicle {
   customerId    String   @db.Uuid
   vehicleNumber String   @unique
   vehicleType   String
-  vehicleMake    String
   vehicleModel   String
   vehicleYear    Int
-  vehicleColor   String
   createdAt     DateTime @db.Timestamptz
   updatedAt     DateTime @db.Timestamptz
 
