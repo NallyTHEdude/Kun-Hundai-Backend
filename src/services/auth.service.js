@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { supabase } from '../config/supabase.js';
+import { supabase, refreshClient } from '../config/supabase.js';
 import { prisma } from '../db/database.js';
 import { logger } from '../utils/logger.js';
 import { ApiError } from '../utils/api-error.js';
@@ -119,11 +119,6 @@ const resetPasswordWithRecoverySession = async ({
     refreshToken,
     newPassword,
 }) => {
-    const recoveryClient = createClient(
-        config.SUPABASE_URL,
-        config.SUPABASE_ANON_KEY,
-    );
-
     const { error: sessionError } = await recoveryClient.auth.setSession({
         access_token: accessToken,
         refresh_token: refreshToken,
@@ -191,15 +186,11 @@ const refreshAccessToken = async (refreshToken) => {
         throw new ApiError(400, 'Refresh token is required.');
     }
 
-    const refreshClient = createClient(
-        config.SUPABASE_URL,
-        config.SUPABASE_ANON_KEY,
-    );
 
     const {
         data: { session },
         error,
-    } = await refreshClient.auth.refreshSession({
+    } = await recoveryClient.auth.refreshSession({
         refresh_token: refreshToken,
     });
 
