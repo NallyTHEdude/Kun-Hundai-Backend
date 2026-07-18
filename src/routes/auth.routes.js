@@ -7,6 +7,7 @@ import {
     forgotPassword,
     resetPassword,
     deleteUser,
+    refreshAccessTokenController,
 } from '../controllers/auth.controller.js';
 import { verifyJWT, verifyRole } from '../middlewares/auth.middleware.js';
 import { UserRolesEnum } from '../constants/user.constants.js';
@@ -17,6 +18,7 @@ import {
     forgotPasswordValidator,
     resetPasswordValidator,
     deleteUserValidator,
+    refreshAccessTokenValidator,
 } from '../validators/schemas/auth.validators.js';
 
 const router = express.Router();
@@ -35,6 +37,7 @@ router.post(
     validate(resetPasswordValidator()),
     resetPassword,
 );
+router.post("/refresh-access-token", validate(refreshAccessTokenValidator()), refreshAccessTokenController);
 
 // secure auth route
 router.get('/profile', verifyJWT, getUserProfile);

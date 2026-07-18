@@ -10,6 +10,7 @@ import {
     resetPasswordWithRecoverySession,
     sendPasswordResetEmail,
     deleteUserByIdentifier,
+    refreshAccessToken,
 } from '../services/auth.service.js';
 
 // const register = asyncHandler(async (req, res) => {
@@ -183,6 +184,22 @@ const deleteUser = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, userDetails, 'User deleted successfully'));
 });
 
+const refreshAccessTokenController = asyncHandler(async (req, res) => {
+    const { refreshToken } = req.body;
+
+    const tokens = await refreshAccessToken(refreshToken);
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                tokens,
+                'Access token refreshed successfully.',
+            ),
+        );
+});
+
 export {
     register,
     login,
@@ -191,4 +208,5 @@ export {
     forgotPassword,
     resetPassword,
     deleteUser,
+    refreshAccessTokenController,
 };

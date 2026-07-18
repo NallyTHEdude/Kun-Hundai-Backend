@@ -186,6 +186,40 @@ export const deleteUserByIdentifier = async (identifier) => {
     };
 };
 
+const refreshAccessToken = async (refreshToken) => {
+    if (!refreshToken) {
+        throw new ApiError(400, 'Refresh token is required.');
+    }
+
+    const refreshClient = createClient(
+        config.SUPABASE_URL,
+        config.SUPABASE_ANON_KEY,
+    );
+
+    const {
+        data: { session },
+        error,
+    } = await refreshClient.auth.refreshSession({
+        refresh_token: refreshToken,
+    });
+
+    if (error) {
+        throw new ApiError(401, error.message);
+    }
+
+    if (!session) {
+        throw new ApiError(401, 'Invalid or expired refresh token.');
+    }
+
+    return {
+        accessToken: session.access_token,
+        refreshToken: session.refresh_token,
+        expiresAt: session.expires_at,
+        expiresIn: session.expires_in,
+        tokenType: session.token_type,
+    };
+};
+
 export {
     registerUser,
     loginUser,
@@ -193,4 +227,5 @@ export {
     getUserProfileById,
     sendPasswordResetEmail,
     resetPasswordWithRecoverySession,
+    refreshAccessToken,
 };

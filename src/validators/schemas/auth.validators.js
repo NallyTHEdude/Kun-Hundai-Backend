@@ -128,10 +128,14 @@ const deleteUserValidator = () => {
     ];
 };
 
+const refreshAccessTokenValidator = () => [
+    body('refreshToken').notEmpty().withMessage('Refresh token is required.'),
+];
 export {
     registerUserValidator,
     loginUserValidator,
     forgotPasswordValidator,
     resetPasswordValidator,
     deleteUserValidator,
+    refreshAccessTokenValidator,
 };
