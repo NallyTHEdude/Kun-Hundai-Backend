@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { supabase, refreshClient } from '../config/supabase.js';
+import { supabase, recoveryClient } from '../config/supabase.js';
 import { prisma } from '../db/database.js';
 import { logger } from '../utils/logger.js';
 import { ApiError } from '../utils/api-error.js';
