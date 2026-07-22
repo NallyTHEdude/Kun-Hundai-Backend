@@ -25,6 +25,13 @@ const createServiceLog = async (data) => {
 
     const now = new Date();
 
+    const serviceCount = await prisma.serviceVisit.count();
+    
+
+    if(serviceCount >= 1000) {
+        await deleteOldestServiceLog();
+    }
+
     const serviceLog = await prisma.$transaction(async (tx) => {
         let customer = await tx.customer.findUnique({
             where: {
@@ -336,4 +343,29 @@ const getAllServiceLogs = async () => {
     return serviceLogs;
 };
 
+
+// ---------- HELPER FUNCTIONS ----------
+const deleteOldestServiceLog = async () => {
+    // Retain only the most recent completed service history to stay
+    // within the free-tier database limits. Active service logs are
+    // never deleted.
+    const oldestCompletedService = await prisma.serviceVisit.findFirst({
+        where: {
+            serviceStatus: ServiceStatusEnum.COMPLETED,
+        },
+        orderBy: {
+            createdAt: 'asc',
+        },
+    });
+
+    if (!oldestCompletedService) {
+        return;
+    }
+
+    await prisma.serviceVisit.delete({
+        where: {
+            id: oldestCompletedService.id,
+        },
+    });
+};
 export { createServiceLog, updateServiceLog, filterServiceLog, getServiceLogById, getAllServiceLogs };
